@@ -1,4 +1,4 @@
-環境安裝:https://www.dcard.tw/f/fju/p/234561890/https://www.pianshen.com/article/4631256212/
+環境安裝:https://www.dcard.tw/f/fju/p/234561890/	https://www.pianshen.com/article/4631256212/
 
 vis:https://visualstudio.microsoft.com/zh-hant/downloads/
 
