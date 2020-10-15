@@ -2,7 +2,7 @@
 
 vis:https://visualstudio.microsoft.com/zh-hant/downloads/
 
-ass:http://asmirvine.com/gettingStartedVS2017/index.htm
+Irvine32-x86:http://asmirvine.com/gettingStartedVS2017/index.htm
 
 起始碼:
 
