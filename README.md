@@ -1,5 +1,9 @@
 環境安裝:https://www.dcard.tw/f/fju/p/234561890
 
+vis:https://visualstudio.microsoft.com/zh-hant/downloads/
+
+ass:http://asmirvine.com/gettingStartedVS2017/index.htm
+
 起始碼:
 
 .386
