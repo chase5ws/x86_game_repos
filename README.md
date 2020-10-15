@@ -10,22 +10,22 @@
 
 ExitProcess proto,dwExitCode:dword
 
-INCLUDE Irvine32.inc		;帶入Irvine32
+INCLUDE Irvine32.inc					;帶入Irvine32
 
 .code
 
 main proc;
 
-	xor eax,eax						;讓eax佔存器歸0
+	xor eax,eax					;讓eax佔存器歸0
   
-	xor edx,edx						;讓edx佔存器歸0
-	mov	eax,0							;設定edx設為0
+	xor edx,edx					;讓edx佔存器歸0
+	mov	eax,0					;設定edx設為0
   
-	mov edx,0							;設定edx設為0
+	mov edx,0					;設定edx設為0
   
-	add eax,5							;將5的值存入eax
+	add eax,5					;將5的值存入eax
   
-	add edx,5							;將5的值存入edx
+	add edx,5					;將5的值存入edx
 
 	call DumpRegs					;印出暫存器的值
 
