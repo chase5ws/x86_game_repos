@@ -1,0 +1,57 @@
+.386
+.model flat,stdcall
+.stack 4096
+ExitProcess proto,dwExitCode:dword
+INCLUDE Irvine32.inc ;帶入Irvine32
+.data
+	myID BYTE 10 dup (0) ;這是我的學號
+	sizeID=($-myID)
+	myID_oddCount WORD ? ;少DATA TYBE
+	myID_evenSum  WORD ? ;少DATA TYBE
+	myID_result	  WORD ? ;少DATA TYBE
+
+.code
+
+main proc
+	mov ecx,sizeID
+	mov esi,0
+L0:
+	call ReadInt
+	cmp al,-1
+	je L1
+	mov [myID+esi],al
+	inc esi
+	loop L0
+
+
+L1:	mov ecx,sizeID	 ;迴圈長度就是array長度
+	xor ebx,ebx					
+	xor edx,edx
+	xor esi,esi
+	xor ax,ax
+L2:
+	movzx ax, myID[esi]		 ;eax=myID[0]
+	test ax,1				 ;測試 eax 是否為偶數
+	jnz L3					 ;基數跳到L3	
+	add myID_evenSum,ax		 ;偶數就加到 myID_evenSum
+	jmp L4
+L3:
+	inc myID_oddCount		 ;有基數 myID_oddCount就加一
+	inc esi
+	loop L2					 ;迴圈減一
+	cmp ecx,0				 ;最後一次跳L5
+	je L5
+
+L4:
+	inc esi					 ;myarray[0+1]
+	loop L2					 ;迴圈減一
+L5:
+	mov ax,myID_evenSum		 ;將myID_evenSum加到ax
+	mov bx,myID_oddCount	 ;將myID_oddCount加到bx
+	mul bx					 ;將 bx = bx*ax
+	mov myID_result,ax		 ;將bx移動到myID_result
+ 	exit
+
+invoke ExitProcess,0
+main endp
+end main
