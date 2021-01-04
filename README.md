@@ -1,4 +1,4 @@
-環境安裝:
+環境安裝: >> $(ProjectName).lst >> Irvine32.lib;
 
 2019_安裝手冊:    https://www.dcard.tw/f/fju/p/234561890/
 
