@@ -8,8 +8,6 @@ visualstudio:    https://visualstudio.microsoft.com/zh-hant/downloads/
 
 Irvine32-x86:    http://asmirvine.com/gettingStartedVS2017/index.htm
 
-學校作業存放處
-
-指令快查
+指令快查:
 
 https://en.wikipedia.org/wiki/X86_instruction_listings?fbclid=IwAR1lZhHLnGZ8oGZMoTXOs-eF0DdOkJaVIpQS6HX6RbdEiADYPk6g9zkR0DM
