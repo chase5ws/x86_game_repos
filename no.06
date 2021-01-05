@@ -1,0 +1,309 @@
+INCLUDE Irvine32.inc
+INCLUDE Macros.inc
+.data
+	background1 byte "********************************",0DH,0AH,0
+	background2 byte "*                              *",0DH,0AH,0
+	word1 byte "1. Press ",34,"A",34," and ",34,"D",34," To Control Your Gun.",0
+	word2 byte "2. Press ",34,"W",34," To Shoot The Enemies.",0
+	word3 byte "3. If The Enemy Bump Into The Wall Behind You,You Lose.",0
+	word4 byte "4. Try To Get As Many Points As Possble,Enjoy Your Game!",0
+	flag byte 0
+	Posx byte 1
+	Posy byte 20
+	bulletX byte ?
+	bulletY byte ?
+	enemyX byte 15
+	enemyY byte 1
+	enemy_flag byte 0
+	enemy_next dword ?
+	score dword 0
+
+.code
+MAIN PROC
+	mov eax,yellow + (black * 16)
+	call setTextColor
+	call Clrscr
+	call print_welcome
+	call readchar
+	g:
+		call rule
+		call readchar
+		call game
+		call lose
+		.IF al=="Y" || al=="y"
+			jmp g
+		.ENDIF
+	exit
+MAIN ENDP
+
+print_welcome PROC
+	mGotoxy 15,1
+	mwrite "_________          .__         "
+	mGotoxy 15,2
+	mwrite "\_   ___ \   ____  |__|  ____  "
+	mGotoxy 15,3
+	mwrite "/    \  \/  /  _ \ |  | /    \ "
+	mGotoxy 15,4
+	mwrite "\     \____(  <_> )|  ||   |  \"
+	mGotoxy 15,5
+	mwrite " \______  / \____/ |__||___|  /"
+	mGotoxy 15,6
+	mwrite "        \/                  \/ "
+	mGotoxy 8,13
+	mwrite "        Assembly Language Final Project"
+	mGotoxy 2,7
+	mwrite "  _________.__                       __               "
+	mGotoxy 2,8
+	mwrite " /   _____/|  |__    ____    ____  _/  |_   ____  _______ "
+	mGotoxy 2,9
+	mwrite " \_____  \ |  |  \  /  _ \  /  _ \ \   __\_/ __ \ \_  __ \"
+	mGotoxy 2,10
+	mwrite " /        \|   Y  \(  <_> )(  <_> ) |  |  \  ___/  |  | \/"
+	mGotoxy 2,11
+	mwrite "/_______  /|___|  / \____/  \____/  |__|   \___  > |__|   "
+	mGotoxy 2,12
+	mwrite "        \/      \/                             \/         "
+	mGotoxy 18,15
+	mwrite "Press Any Key to continue..."
+	mGotoxy 0,0
+	mwrite "**************************************************************"
+	mGotoxy 0,18
+	mwrite "**************************************************************"
+	mov dh,17
+	.WHILE dh!=0
+		mGotoxy 0,dh
+		mwrite "*"
+		mGotoxy 61,dh
+		mwrite "*"
+		dec dh
+	.ENDW
+	ret
+print_welcome ENDP
+
+rule PROC
+	call Clrscr
+	mGotoxy 0,0
+	mwrite "******************************************************************"
+	mGotoxy 0,18
+	mwrite "******************************************************************"
+	mov dh,17
+	.WHILE dh!=0
+		mGotoxy 0,dh
+		mwrite "*"
+		mGotoxy 65,dh
+		mwrite "*"
+		dec dh	
+	.ENDW
+	mGotoxy 1,1
+	mwrite "  ________                        __________      .__          "
+	mGotoxy 1,2
+	mwrite " /  _____/_____    _____   ____   \______   \__ __|  |   ____  "
+	mGotoxy 1,3
+	mwrite "/   \  ___\__  \  /     \_/ __ \   |       _/  |  \  | _/ __ \ "
+	mGotoxy 1,4
+	mwrite "\    \_\  \/ __ \|  Y Y  \  ___/   |    |   \  |  /  |_\  ___/ "
+	mGotoxy 1,5
+	mwrite " \______  (____  /__|_|  /\___  >  |____|_  /____/|____/\___  >"
+	mGotoxy 1,6
+	mwrite "        \/     \/      \/     \/          \/                \/ "
+	mGotoxy 5,8
+	mov edx,offset word1
+	call writestring
+	mGotoxy 5,10
+	mov edx,offset word2
+	call writestring
+	mGotoxy 5,12
+	mov edx,offset word3
+	call writestring
+	mGotoxy 5,14
+	mov edx,offset word4
+	call writestring
+	mGotoxy 18,16
+	mwrite "Press Any Key to continue..."
+	ret	
+rule ENDP
+
+game PROC
+	mov flag,0
+	mov Posx,1
+	mov Posy,20
+	mov enemyX,15
+	mov enemyY,1
+	mov enemy_flag,0
+	mov score,0
+	call Clrscr
+	mov edx,offset background1
+	call writestring
+	mov edx,offset background2
+	mov ecx,20
+	L1:
+		call writestring
+	Loop L1
+	mov edx,offset background1
+	call writestring
+	mGotoxy 35,1
+	mwrite "***************"
+	mGotoxy 35,2
+	mwrite "*             *"
+	mGotoxy 35,3
+	mwrite "*             *"
+	mGotoxy 36,3
+	mwrite " Your Score "
+	mGotoxy 35,4
+	mwrite "*             *"
+	mGotoxy 35,5
+	mwrite "*             *"
+	mGotoxy 35,6
+	mwrite "***************"
+	lo:
+		mGotoxy 0,0
+		push dx
+		mov dl,42
+		mov dh,4
+		call gotoxy
+		mov eax,score
+		call writedec
+		pop dx
+		mov eax,40	;0.04秒
+		call delay
+		call gotoxy
+		mov al,' '
+		call writechar
+		.IF flag==1
+			mov dl,bulletX
+			mov dh,bulletY
+			mov al,' '
+			call gotoXY
+			call writechar
+			dec dh
+			dec bulletY
+			.IF dh != 0
+				mov al,'$'
+				call gotoXY
+				call writechar
+			.ELSE
+				dec flag
+			.ENDIF
+		.ENDIF
+		.IF enemy_flag==20
+			mov dl,enemyX
+			mov dh,enemyY
+			call gotoxy
+			mov al,' '
+			call writechar
+			push eax
+			mov eax,3
+			call RandomRange
+			mov enemy_next,eax
+			.IF enemy_next==0
+				.IF enemyX!=1
+				dec enemyX 
+				.ENDIF
+			.ELSEIF enemy_next==2
+				.IF enemyX!=30
+					inc enemyX 
+				.ENDIF
+			.ENDIF
+			pop eax
+			inc enemyY
+			inc dh
+			mov dl,enemyX
+			call gotoxy
+			mov al,'O'
+			call writechar
+			mov enemy_flag,5
+			.IF	enemyY>20
+				jmp los
+			.ENDIF
+		.ELSE 
+			inc enemy_flag
+		.ENDIF
+		mov dl,enemyX
+		mov dh,enemyY
+		.IF dl==bulletX && dh== bulletY
+			inc score
+			call gotoxy
+			mov al,' '
+			call writechar
+			mov enemy_flag,0
+			mov enemyY,1
+			mov enemyX,15
+			mov eax,30
+			call RandomRange
+			.IF eax>=1 && eax <=30
+				mov enemyX,al
+			.ENDIF
+		.ENDIF
+		call readkey		;存al
+		.IF (al == 'a' || al == 'A') && Posx!=1
+			dec Posx
+		.ELSEIF (al == 'd' || al=='D') && Posx!=30
+			inc Posx
+		.ELSEIF (al == 'w' ||al == 'W') && flag==0
+			mov dl,Posx
+			mov dh,Posy
+			dec dh
+			mov bulletX,dl
+			mov bulletY,dh
+			call Gotoxy
+			mov al,'$'
+			call writechar
+			inc flag
+		.ENDIF
+		mov dl,Posx
+		mov dh,Posy
+		call gotoXY
+		mov al,'A'
+		call writechar
+		jmp lo
+		los:
+			ret
+game ENDP
+lose PROC
+	call Clrscr
+	mov edx,offset background1
+	call writestring
+	mov edx,offset background2
+	mov ecx,20
+	L1:
+		call writestring
+	Loop L1
+	mov edx,offset background1
+	call writestring
+	mov dh,1
+	.WHILE dh<=20
+		mov eax,50
+		call delay
+		mov dl,1
+		.WHILE dl<=30
+			mGotoxy dl,dh
+			mwrite "*"
+			inc dl
+		.ENDW
+		inc dh
+	.ENDW
+	mGotoxy 35,1
+	mwrite ".__   ________     ____________________"
+	mGotoxy 35,2
+	mwrite "|  |  \_____  \   /   _____/\_   _____/"
+	mGotoxy 35,3
+	mwrite "|  |   /   |   \  \_____  \  |    __)_ "
+	mGotoxy 35,4
+	mwrite "|  |__/    |    \ /        \ |        \"
+	mGotoxy 35,5
+	mwrite "|____/\_______  //_______  //_______  /"
+	mGotoxy 35,6
+	mwrite "              \/         \/         \/ "
+	mGotoxy 38,10
+	mwrite "Your Score: "
+	mov eax,score
+	call writedec
+	mGotoxy 38,13
+	mov eax,1000
+	call delay
+	mwrite "Do You Want To Try Again?(Y/N)"
+	call readchar
+	mGotoxy 0,21
+	ret
+lose ENDP
+END MAIN
