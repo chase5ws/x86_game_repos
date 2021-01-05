@@ -11,3 +11,7 @@ Irvine32-x86:    http://asmirvine.com/gettingStartedVS2017/index.htm
 指令快查:
 
 https://en.wikipedia.org/wiki/X86_instruction_listings?fbclid=IwAR1lZhHLnGZ8oGZMoTXOs-eF0DdOkJaVIpQS6HX6RbdEiADYPk6g9zkR0DM
+
+判斷上下左右 或enter:
+
+https://stackoverflow.com/questions/46754566/how-do-i-check-if-the-arrow-keys-are-pressed-in-assembly-16-bits-bare-bones
