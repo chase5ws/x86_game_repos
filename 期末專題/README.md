@@ -8,3 +8,5 @@
 enter 可以確認選單
 
 ↑ ↓ ← →可以改變選單位置
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9Yu3nBAM6Pc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
