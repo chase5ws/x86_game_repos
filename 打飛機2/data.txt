@@ -1,0 +1,184 @@
+.DATA
+	a WORD 2920 DUP(0)  ;緩衝區 
+;----------------------------------------------------------------------------------遊戲資料
+	gameblock byte"==========================================",0DH,0AH,0
+	straight byte "|                                        |",0DH,0AH,0
+	flag byte 0
+	airplaneX byte 1
+	airplaneY byte 20
+	bulletX byte ?
+	bulletY byte ?
+	foe1X byte ?
+	foe1Y byte 1
+	enemy_flag byte 0
+	enemy_next dword ?
+	score  dword 0
+;----------------------------------------------------------------------------------美術畫面(menu)
+menuP01   BYTE "====================================================", 0Dh, 0Ah,0
+menuP02   BYTE "|                                                  |", 0Dh, 0Ah,0
+menuP03   BYTE "|       -   ----     ------------     -   -- -     |", 0Dh, 0Ah,0
+menuP04   BYTE "|     ----    -         -  -   -     ----  -- -    |", 0Dh, 0Ah,0
+menuP05   BYTE "|       -     -      ----  -   --     -   -- -     |", 0Dh, 0Ah,0
+menuP06   BYTE "|       -     -         -  -   -     ----  -- -    |", 0Dh, 0Ah,0
+menuP07   BYTE "|       --    -      ------------    -- -------    |", 0Dh, 0Ah,0
+menuP08   BYTE "|     ---     -         -  -   -      - --  -      |", 0Dh, 0Ah,0
+menuP09   BYTE "|       -     -         -  -   --     - -   -- -   |", 0Dh, 0Ah,0
+menuP10   BYTE "|       -    --      --    -    --    --   - ---   |", 0Dh, 0Ah,0
+menuP11   BYTE "|                                                  |", 0Dh, 0Ah,0
+menuP12   BYTE "|                                                  |", 0Dh, 0Ah,0
+menuP13   BYTE "|                  --> 開始遊戲                    |", 0Dh, 0Ah,0
+menuP14   BYTE "|                                                  |", 0Dh, 0Ah,0
+menuP15   BYTE "|                      設定顏色                    |", 0Dh, 0Ah,0
+menuP16   BYTE "|                                                  |", 0Dh, 0Ah,0
+menuP17   BYTE "|                      結束遊戲                    |", 0Dh, 0Ah,0
+menuP18   BYTE "|                                  方向鍵 移動選單 |", 0Dh, 0Ah,0
+menuP19   BYTE "|                                                  |", 0Dh, 0Ah,0
+menuP20   BYTE "|                                  空白健 確定選單 |", 0Dh, 0Ah,0
+menuP21   BYTE "|更新日期:21/01/07                                 |", 0Dh, 0Ah,0
+menuP22   BYTE "====================================================", 0Dh, 0Ah,0
+menuP23   BYTE "|                      開始遊戲                    |", 0Dh, 0Ah,0
+menuP24   BYTE "|                  --> 設定顏色                    |", 0Dh, 0Ah,0
+menuP25   BYTE "|                  --> 結束遊戲                    |", 0Dh, 0Ah,0
+menuP26   BYTE "|                  --> 製作名單                    |", 0Dh, 0Ah,0
+;----------------------------------------------------------------------------------美術畫面(team)
+teamP01   BYTE "====================================================", 0Dh, 0Ah,0
+teamP02   BYTE "| -                                                |", 0Dh, 0Ah,0
+teamP03   BYTE "|---      ---      --                    -     --- |", 0Dh, 0Ah,0
+teamP04   BYTE "| -      -   -        -     ---- -      -  -   -  -|", 0Dh, 0Ah,0
+teamP05   BYTE "| - -    -----   - -- -     -  -  -       -    ----|", 0Dh, 0Ah,0
+teamP06   BYTE "| - -    -       -    -     -  -  -      -       - |", 0Dh, 0Ah,0
+teamP07   BYTE "|  -       --      --   -   -  -  -     ----    -  |", 0Dh, 0Ah,0
+teamP08   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP09   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP10   BYTE "|       製作人員:                                  |", 0Dh, 0Ah,0
+teamP11   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP12   BYTE "|           408262703曾博暘(其他畫面和遊戲難度)    |", 0Dh, 0Ah,0
+teamP13   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP14   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP15   BYTE "|           407040093邱妍瑛(主遊戲開發)            |", 0Dh, 0Ah,0
+teamP16   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP17   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP18   BYTE "|                --> 返回首頁 <--                  |", 0Dh, 0Ah,0
+teamP19   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP20   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP21   BYTE "|下鍵 Without You                    空白健 回首頁 |", 0Dh, 0Ah,0
+teamP22   BYTE "====================================================", 0Dh, 0Ah,0
+teamP23   BYTE "|    I'm still the same 都好像沒有變               |", 0Dh, 0Ah,0
+teamP24   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP25   BYTE "|         Nothing changed 還是討厭下雨天           |", 0Dh, 0Ah,0
+teamP26   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP27   BYTE "|              還是不愛認錯 脾氣是硬了點           |", 0Dh, 0Ah,0
+teamP28   BYTE "|                                                  |", 0Dh, 0Ah,0
+teamP29   BYTE "|                   這我都清楚 但我沒有辦法改變    |", 0Dh, 0Ah,0
+teamP30   BYTE "|                                                  |", 0Dh, 0Ah,0
+;----------------------------------------------------------------------------------美術畫面(gameover)
+overP01   BYTE "====================================================", 0Dh, 0Ah,0
+overP02   BYTE "|  ---------    ------    -----------   ---------  |", 0Dh, 0Ah,0
+overP03   BYTE "|  --          --    --   --   -   --   --         |", 0Dh, 0Ah,0
+overP04   BYTE "|  --    ---   --    --   --   -   --   ---------  |", 0Dh, 0Ah,0
+overP05   BYTE "|  --     --   --------   --   -   --   --         |", 0Dh, 0Ah,0
+overP06   BYTE "|  ---------   --    --   --   -   --   ---------  |", 0Dh, 0Ah,0
+overP07   BYTE "|                                                  |", 0Dh, 0Ah,0
+overP08   BYTE "|   -------    --       --  ---------   ---------  |", 0Dh, 0Ah,0
+overP09   BYTE "| --       --   --     --   --          --     --  |", 0Dh, 0Ah,0
+overP10   BYTE "| --       --    --   --    ---------   ---------  |", 0Dh, 0Ah,0
+overP11   BYTE "| --       --     -- --     --          --  --     |", 0Dh, 0Ah,0
+overP12   BYTE "|   -------        --       ---------   --    ---  |", 0Dh, 0Ah,0
+overP13   BYTE "|                                                  |", 0Dh, 0Ah,0
+overP14   BYTE "|        你的分數:                                 |", 0Dh, 0Ah,0
+overP15   BYTE "|                                                  |", 0Dh, 0Ah,0
+overP16   BYTE "|               --> 重新遊戲(簡單)                 |", 0Dh, 0Ah,0
+overP17   BYTE "|                                                  |", 0Dh, 0Ah,0
+overP18   BYTE "|                   選擇難度                       |", 0Dh, 0Ah,0
+overP19   BYTE "|                                                  |", 0Dh, 0Ah,0
+overP20   BYTE "|                   返回首頁                       |", 0Dh, 0Ah,0
+overP21   BYTE "|                                                  |", 0Dh, 0Ah,0
+overP22   BYTE "====================================================", 0Dh, 0Ah,0
+overP24   BYTE "|               --> 選擇難度                       |", 0Dh, 0Ah,0
+overP25   BYTE "|               --> 反回首頁                       |", 0Dh, 0Ah,0
+overP23   BYTE "|                   重新遊戲(簡單)                 |", 0Dh, 0Ah,0
+overP26   BYTE "|                   重新遊戲(普通)                 |", 0Dh, 0Ah,0
+overP27   BYTE "|               --> 重新遊戲(普通)                 |", 0Dh, 0Ah,0
+overP28   BYTE "|                   重新遊戲(困難)                 |", 0Dh, 0Ah,0
+overP29   BYTE "|               --> 重新遊戲(困難)                 |", 0Dh, 0Ah,0
+;----------------------------------------------------------------------------------美術畫面(規則)
+ruleP01   BYTE "====================================================", 0Dh, 0Ah,0
+ruleP02   BYTE "|                                                  |", 0Dh, 0Ah,0
+ruleP03   BYTE "|              -----       -----  - -              |", 0Dh, 0Ah,0
+ruleP04   BYTE "|          -   -   -       -   -  -  -             |", 0Dh, 0Ah,0
+ruleP05   BYTE "|         ---  -----       -----  -  -             |", 0Dh, 0Ah,0
+ruleP06   BYTE "|          -   -   -       -   -     -             |", 0Dh, 0Ah,0
+ruleP07   BYTE "|         ---  -----       -----     -             |", 0Dh, 0Ah,0
+ruleP08   BYTE "|         - -   - -                  -             |", 0Dh, 0Ah,0
+ruleP09   BYTE "|              -  --        - -    ---             |", 0Dh, 0Ah,0
+ruleP10   BYTE "|                                                  |", 0Dh, 0Ah,0
+ruleP11   BYTE "|2030年,人類汙染了地球後,乘坐著太空梭想要去污染其他|", 0Dh, 0Ah,0
+ruleP12   BYTE "|星球,為了防止這個宇宙被破壞,為了保護宇宙的和平,貫 |", 0Dh, 0Ah,0
+ruleP13   BYTE "|愛徹與真實的邪惡,可愛又迷人的外星腳色,我是啾啾丸. |", 0Dh, 0Ah,0
+ruleP14   BYTE "|飛碟叫做啾啾鞋,啾啾鞋:逼逼,我們是穿梭在宇宙的正義 |", 0Dh, 0Ah,0
+ruleP15   BYTE "|使者,殺死那些該死的人類吧。                       |", 0Dh, 0Ah,0
+ruleP16   BYTE "|                                                  |", 0Dh, 0Ah,0
+ruleP17   BYTE "|   玩法說明:   左右鍵 控制飛碟                    |", 0Dh, 0Ah,0
+ruleP18   BYTE "|               空白鍵 發射死亡積光炮              |", 0Dh, 0Ah,0
+ruleP19   BYTE "|                                                  |", 0Dh, 0Ah,0
+ruleP20   BYTE "|    -->嬰兒模式     成人模式         回家         |", 0Dh, 0Ah,0
+ruleP21   BYTE "|                                                  |", 0Dh, 0Ah,0
+ruleP22   BYTE "====================================================", 0Dh, 0Ah,0
+ruleP23   BYTE "|       嬰兒模式     成人模式     -->回家          |", 0Dh, 0Ah,0
+ruleP24   BYTE "|	嬰兒模式  -->成人模式        回家          |", 0Dh, 0Ah,0
+ruleP25   BYTE "|    -->將軍模式     成人模式        回家          |", 0Dh, 0Ah,0
+;----------------------------------------------------------------------------------美術畫面(coloerset)
+colorsetP01   BYTE "====================================================", 0Dh, 0Ah,0
+colorsetP02   BYTE "|                                                  |", 0Dh, 0Ah,0
+colorsetP03   BYTE "|       -   ----     ------------     -   -- -     |", 0Dh, 0Ah,0
+colorsetP04   BYTE "|     ----    -         -  -   -     ----  -- -    |", 0Dh, 0Ah,0
+colorsetP05   BYTE "|       -     -      ----  -   --     -   -- -     |", 0Dh, 0Ah,0
+colorsetP06   BYTE "|       -     -         -  -   -     ----  -- -    |", 0Dh, 0Ah,0
+colorsetP07   BYTE "|       --    -      ------------    -- -------    |", 0Dh, 0Ah,0
+colorsetP08   BYTE "|     ---     -         -  -   -      - --  -      |", 0Dh, 0Ah,0
+colorsetP09   BYTE "|       -     -         -  -   --     - -   -- -   |", 0Dh, 0Ah,0
+colorsetP10   BYTE "|       -    --      --    -    --    --   - ---   |", 0Dh, 0Ah,0
+colorsetP11   BYTE "|                                                  |", 0Dh, 0Ah,0
+colorsetP12   BYTE "|                                                  |", 0Dh, 0Ah,0
+colorsetP13   BYTE "|                  --> 黃色模式                    |", 0Dh, 0Ah,0
+colorsetP14   BYTE "|                                                  |", 0Dh, 0Ah,0
+colorsetP15   BYTE "|                      白色模式                    |", 0Dh, 0Ah,0
+colorsetP16   BYTE "|                                                  |", 0Dh, 0Ah,0
+colorsetP17   BYTE "|                      返回首頁                    |", 0Dh, 0Ah,0
+colorsetP18   BYTE "|                                  方向鍵 移動選單 |", 0Dh, 0Ah,0
+colorsetP19   BYTE "|                                                  |", 0Dh, 0Ah,0
+colorsetP20   BYTE "|                                  空白健 確定選單 |", 0Dh, 0Ah,0
+colorsetP21   BYTE "|                                                  |", 0Dh, 0Ah,0
+colorsetP22   BYTE "====================================================", 0Dh, 0Ah,0
+colorsetP23   BYTE "|                  --> 白色模式                    |", 0Dh, 0Ah,0
+colorsetP24   BYTE "|                      黃色模式                    |", 0Dh, 0Ah,0
+colorsetP25   BYTE "|                  --> 反回首頁                    |", 0Dh, 0Ah,0
+;----------------------------------------------------------------------------------美術畫面(win)
+winP01   BYTE "====================================================", 0Dh, 0Ah,0
+winP02   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP03   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP04   BYTE "|      -------------   -      ------------         |", 0Dh, 0Ah,0
+winP05   BYTE "|                     -               ---          |", 0Dh, 0Ah,0
+winP06   BYTE "|            --      -               ---           |", 0Dh, 0Ah,0
+winP07   BYTE "|           --                     ---             |", 0Dh, 0Ah,0
+winP08   BYTE "|          --                      ---             |", 0Dh, 0Ah,0
+winP09   BYTE "|         --                       ---             |", 0Dh, 0Ah,0
+winP10   BYTE "|        -----------             -----             |", 0Dh, 0Ah,0
+winP11   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP12   BYTE "|                                                  |", 0Dh, 0Ah,0
+;-----------------------------------輸出分數-------------------------------------
+winP14   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP15   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP16   BYTE "|                --> 難度選單		           |", 0Dh, 0Ah,0
+winP17   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP18   BYTE "|                    返回首頁	                   |", 0Dh, 0Ah,0
+winP19   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP20   BYTE "|                    結束遊戲	                   |", 0Dh, 0Ah,0
+winP21   BYTE "|                                                  |", 0Dh, 0Ah,0
+winP22   BYTE "====================================================", 0Dh, 0Ah,0
+
+winP23   BYTE "|                    難度選單		           |", 0Dh, 0Ah,0
+
+winP24   BYTE "|                --> 返回首頁                      |", 0Dh, 0Ah,0
+
+winP25   BYTE "|                --> 結束遊戲		           |", 0Dh, 0Ah,0

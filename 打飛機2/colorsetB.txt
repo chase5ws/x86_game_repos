@@ -1,0 +1,60 @@
+;----------------------------------------------------------------------------------遊戲畫面(colorset-back)
+colorsetB PROC
+
+		 call Clrscr
+		 MOV EDX, OFFSET colorsetP01
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP02
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP03
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP04
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP05
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP06
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP07
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP08
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP09
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP10
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP11
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP12
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP24
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP14
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP15
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP16
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP25
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP18
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP19
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP20
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP21
+		 CALL WriteString
+		 MOV EDX, OFFSET colorsetP22
+		 CALL WriteString
+;-----------------------------------畫面跳轉	 
+		 .REPEAT
+			CALL Readkey
+			.IF (al == 0Dh)||(al == ' ') ;ENTER空白
+				call menu1
+			.ELSEIF ah == 50h	;下
+				call colorset
+			.ELSEIF al == 48h	;上
+				call colorsetW
+			.ENDIF
+		 .UNTIL	(ah == 50h)||(al == 0Dh)||(al == 48h)||(al == ' ')
+colorsetB ENDP

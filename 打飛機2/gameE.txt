@@ -1,0 +1,155 @@
+;----------------------------------------------------------------------------------遊戲運行(EASY)
+gameE PROC
+	mov flag,0
+	mov airplaneX,1
+	mov airplaneY,20
+	.WHILE foe1X == 0
+;-----------------------------------產生敵人
+		call RandomRange
+			.IF eax > 1 && eax < 42
+				mov foe1X,al 
+			.ENDIF
+	.endw
+;-----------------------------------
+	mov foe1Y,1
+	mov enemy_flag,0
+	mov score,0
+	call Clrscr
+	mov edx,offset gameblock
+	call writestring
+	mov edx,offset straight
+	mov ecx,20
+;-----------------------------------顯示分數
+	L1:
+		call writestring
+	Loop L1
+	mov edx,offset gameblock
+	call writestring
+	mGotoxy 50,2
+	mwrite "======SCORE======"
+	mGotoxy 50,3
+	mwrite "|               |"
+	mGotoxy 50,4
+	mwrite "================="
+;-----------------------------------
+
+	lo:
+		mGotoxy 0,0
+		push dx
+		mov dl,42
+		mov dh,4
+		call gotoxy
+		
+		mov dl,57
+		mov dh,3
+		call gotoxy
+		mov eax,score
+		call writedec
+		pop dx
+;-----------------------------------困難調整
+		.IF score<300
+			mov eax,30
+		.ELSEIF score<600
+			mov eax,25	;12
+		.ELSEIF score<900
+			mov eax,20	;9
+		.ELSEIF score<1200
+			mov eax,15	;8
+		.ELSEIF score<2000
+			mov eax,10	;7
+		.ELSE
+			call win
+		.ENDIF
+;-----------------------------------
+		call delay
+		call gotoxy
+		mov al,' '
+		call writechar
+		.IF flag==1
+			mov dl,bulletX
+			mov dh,bulletY
+			mov al,' '
+			call gotoXY
+			call writechar
+			dec dh
+			dec bulletY
+			.IF dh != 0
+				.IF dh > 16
+					mov al,'.'
+				.ELSE
+					mov al,'|'
+				.ENDIF
+				call gotoXY
+				call writechar
+			.ELSE
+				dec flag
+			.ENDIF
+		.ENDIF
+		.IF enemy_flag==20
+			mov dl,foe1X
+			mov dh,foe1Y
+			call gotoxy
+			mov al,' '
+			call writechar
+			push eax
+			mov eax,3
+			call RandomRange
+			mov enemy_next,eax
+			pop eax
+			inc foe1Y
+			inc dh
+			mov dl,foe1X
+			call gotoxy
+			mov al,'V'
+			call writechar
+			mov enemy_flag,5
+			.IF	foe1Y>20
+				jmp los
+			.ENDIF
+		.ELSE 
+			inc enemy_flag
+		.ENDIF
+		mov dl,foe1X
+		mov dh,foe1Y
+		.IF dl == bulletX && dh == bulletY
+			add score,100
+			call gotoxy
+			mov al,' '
+			call writechar
+			mov enemy_flag,0
+			mov foe1Y,1
+			mov foe1X,15
+			mov eax,30
+			call RandomRange
+			.IF eax >= 1 && eax <= 40
+				mov foe1X,al
+			.ENDIF
+		.ENDIF
+;-----------------------------------操作系統
+
+		call readkey		;非功能鍵存al 功能鍵ah
+		.IF (ah == 4bh) && airplaneX != 1 ;左鍵
+			dec airplaneX
+		.ELSEIF (ah == 4dh) && airplaneX != 40 ;右鍵
+			inc airplaneX
+		.ELSEIF (al == ' ') && flag==0 ;空白鍵
+			mov dl,airplaneX
+			mov dh,airplaneY
+			dec dh
+			mov bulletX,dl
+			mov bulletY,dh
+			call Gotoxy
+			mov al,'@'
+			call writechar
+			inc flag
+		.ENDIF
+;-----------------------------------		
+		mov dl,airplaneX
+		mov dh,airplaneY
+		call gotoXY
+		mov al,'U'
+		call writechar
+		jmp lo
+		los:
+			call overE1
+gameE ENDP

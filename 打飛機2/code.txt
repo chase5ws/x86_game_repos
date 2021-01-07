@@ -1,0 +1,6 @@
+.CODE
+main PROC
+		MOV EAX,yellow
+		call setTextColor
+		CALL menu1
+main ENDP
