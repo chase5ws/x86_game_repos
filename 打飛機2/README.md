@@ -8,4 +8,4 @@ enter 可以確認選單
 
 ↑ ↓ ← →可以改變選單位置
 
-demo: https://www.youtube.com/watch?v=9Yu3nBAM6Pc
+demo: https://youtu.be/owg5Kib4PGY
