@@ -494,7 +494,7 @@ gameN PROC
 		call writechar
 		jmp lo
 		los:
-			call overE1
+			call overN1
 gameN ENDP
 ;----------------------------------------------------------------------------------遊戲運行(嬰兒)
 gameE PROC
