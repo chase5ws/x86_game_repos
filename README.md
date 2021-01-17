@@ -1,3 +1,5 @@
+打飛機最終釋出版DEMO:https://youtu.be/qM8mDWAQ5ZM
+
 環境安裝: >> $(ProjectName).lst >> Irvine32.lib;
 
 2019_安裝手冊:    https://www.dcard.tw/f/fju/p/234561890/
@@ -15,3 +17,11 @@ https://en.wikipedia.org/wiki/X86_instruction_listings?fbclid=IwAR1lZhHLnGZ8oGZM
 判斷上下左右 或enter:
 
 https://stackoverflow.com/questions/46754566/how-do-i-check-if-the-arrow-keys-are-pressed-in-assembly-16-bits-bare-bones
+
+美術圖參考網站:
+
+https://www.asciiart.eu/
+
+圖片轉換點陣圖網站:
+
+https://www.twitchquotes.com/ascii-art-generator
