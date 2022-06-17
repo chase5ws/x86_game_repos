@@ -1,6 +1,6 @@
-打飛機最終釋出版DEMO:https://youtu.be/qM8mDWAQ5ZM
+打飛機最終釋出版DEMO(finally demo viedo):https://youtu.be/qM8mDWAQ5ZM
 
-環境安裝: >> $(ProjectName).lst >> Irvine32.lib;
+環境安裝(Environment settings): >> $(ProjectName).lst >> Irvine32.lib;
 
 2019_安裝手冊:    https://www.dcard.tw/f/fju/p/234561890/
 
